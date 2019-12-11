@@ -20,18 +20,20 @@ var con = mysql.createConnection({
     database: "contact",
     port: "3306"
   });
+
+
   
   con.connect(function(err) {
     if (err) throw err;
     var name = req.body.name;
     var email = req.body.email;
     var text = req.body.text
-    var sql = "insert into contact (name, email, text) values ('" + name + "', '" + email + "', '" + text + "');";
+    var sql = "insert into contact (name, email, text) values (" + con.escape(name) + ", " + con.escape(email) + ", " + con.escape(text) + ");";
     con.query(sql, function (err, result) {
         if (err) throw err;
       });
       res.sendFile('index.html', {root: path.join(__dirname)});
-  });
+});
 });
 
 var html_dir = './html/';
@@ -40,5 +42,5 @@ app.get('/', function(req, res){
 })
 
 app.listen(3000, function(){
-    console.log('Listening on port 8080');
+    console.log('Listening on port 3000');
 })
